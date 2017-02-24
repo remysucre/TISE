@@ -74,8 +74,8 @@ mpl.rcParams['legend.fontsize'] = 10
 fig = mpl.figure()
 ax = fig.gca(projection='3d')
 
-
-for j in range(0,101):
+"""
+for j in range(70,101):
 
     f = getFcn(lengths[j])
 
@@ -86,9 +86,12 @@ for j in range(0,101):
 
     roots = []
     for k in range(0,len(guesses)):
-        root = opt.newton(f, E[guesses[k]])
-        # mpl.scatter(k,root)
-        ax.scatter(k, root, lengths[j], label='parametric curve')
+        #root = opt.newton(f, E[guesses[k]])
+       	upper = E[guesses[k]+1]
+       	lower = E[guesses[k]]
+       	root = opt.bisect(f,lower, upper)
+        #mpl.scatter(k,root)
+        #ax.scatter(k, root, lengths[j], label='parametric curve')
         roots.append(root)
     #rootConvergence.append(roots)
 
@@ -96,7 +99,21 @@ for j in range(0,101):
 
 #mpl.plot(rootConvergence.slice())
 mpl.show()
+"""
 
+def normalize(f,dx):
+	integral= 0
+	for i in f:
+		integral += i
+		
+	integral = integral*(dx)
+	return integral
+
+s = odeint(tise, y0, x, args=(1.85575704051,))
+
+norm = normalize(s[:,0]	,l/100)
+mpl.plot(x,s[:,0]*norm)
+mpl.show()
 """
 num_l = 1
 roots = np.zeros(num_l)
