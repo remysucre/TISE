@@ -69,7 +69,8 @@ def findEigenVals(ls, Es, getPsiFcn):
         for guess in guesses:
             lower = Es[guess]
             upper = Es[guess+1]
-            root = opt.bisect(psiFcn ,lower, upper)
+            #root = opt.bisect(psiFcn ,lower, upper)
+            root = opt.newton(psiFcn ,lower)
             roots.append(root)
 
         rootConvergence.append(roots)
@@ -86,8 +87,6 @@ def normalize(f,dx):
     return f/np.sqrt(integral)
 
 
-
-
 # sets of eigenvalues for different L in psi(L) = 0
 eigenMat = findEigenVals(lengths,Es,getPsiFcn)
 
@@ -95,11 +94,13 @@ mpl.clf()
 
 # plot the sets of eigenvalues obtained for
 # each L in psi(L) = 0
+"""
 for i in range(0,len(lengths)):
     for r in eigenMat[i]:
         mpl.scatter(lengths[i], r)
 
 mpl.show()
+"""
 
 # converging eigenvalues
 eigenVals = eigenMat[-1]
@@ -110,6 +111,7 @@ eigenPlotNum = 5
 
 # plot the potential V = x
 mpl.plot(x, x, 'k', label='V')
+mpl.show()
 
 # plot the first several converging eigenfunctions
 for i in range(eigenPlotNum):
@@ -117,6 +119,7 @@ for i in range(eigenPlotNum):
         psi_norm = normalize(psi, dx)
         mpl.plot(x, psi_norm[:, 0], label='$\Psi_'+str(i)+'$')
 
+"""
 mpl.xlim(0, x1)
 mpl.xlabel('x')
 
@@ -128,4 +131,5 @@ mpl.grid()
 mpl.legend()
 
 mpl.savefig('eigen-functions.pdf')
-# mpl.show()
+"""
+
